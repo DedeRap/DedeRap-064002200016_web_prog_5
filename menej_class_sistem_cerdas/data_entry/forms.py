@@ -1,12 +1,11 @@
 from django import forms
-from .models import Pengguna
-from .models import Content
+from .models import Pengguna, Content
 
 STATES = (
     ('', 'Choose...'),
-    ('MG', 'Minas Gerais'),
-    ('SP', 'Sao Paulo'),
-    ('RJ', 'Rio de Janeiro')  
+    ('DKI', 'Daerah Khusus Ibu Kota'),
+    ('DIY', 'Daerah Istimewa Yogyakarta'),
+    ('JaBar', 'Jawa Barat')
 )
 
 class AddressForm(forms.Form):
@@ -23,15 +22,18 @@ class AddressForm(forms.Form):
     state = forms.ChoiceField(choices=STATES)
     zip_code = forms.CharField(label='Zip')
     check_me_out = forms.BooleanField(required=False)
-
+    
 class PenggunaForm(forms.ModelForm):
     state = forms.ChoiceField(choices=STATES)
-
+    
     class Meta:
         model = Pengguna
         exclude = ['tanggal_join',]
-
+        
 class ContentForm(forms.ModelForm):
-    class Meta :
+    class Meta:
         model = Content
-        exclude = ["date_created"]
+        fields = ['author', 'artikel', 'set_view']
+        
+class SearchPengguna(forms.Form):
+    state = forms.ChoiceField(choices=STATES)
